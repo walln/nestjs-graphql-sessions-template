@@ -1,0 +1,22 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthLoginInput {
+  password: String!
+  username: String!
+}
+
+type Mutation {
+  login(input: AuthLoginInput!): UserDto
+  logout: Boolean!
+}
+
+type Query {
+  viewer: UserDto
+}
+
+type UserDto {
+  id: String!
+  username: String!
+}
