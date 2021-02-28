@@ -3,13 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as passport from 'passport';
 import * as session from 'express-session';
-import { UserDto } from './users/dto/user.dto';
-
-// declare module 'express' {
-//   export interface Request {
-//     user?: UserDto;
-//   }
-// }
+import { SESSION_MAX_AGE, SESSION_SECRET } from './common/session.constants';
+import { __prod__ } from './common/utils.constants';
 
 declare module 'express-session' {
   export interface Session {
@@ -17,24 +12,20 @@ declare module 'express-session' {
   }
 }
 
-// declare global {
-//   namespace Express {
-//     interface Session {
-//       userId: string;
-//     }
-//   }
-// }
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(
     session({
-      secret: 'secret',
+      secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
-      // cookie: configService.cookieOptions,
-      // store: new RedisStore({ client: redisClient }),
+      cookie: {
+        maxAge: SESSION_MAX_AGE,
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: __prod__,
+      },
     }),
   );
 
