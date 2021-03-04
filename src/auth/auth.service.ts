@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ExpressContext, UserInputError } from 'apollo-server-express';
-import { UserDto } from 'src/users/dto/user.dto';
+import { User } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AuthLoginInput } from './inputs/login.input';
 // import bcryptjs from 'bcryptjs';
@@ -20,7 +20,7 @@ export class AuthService {
     return null;
   }
 
-  async validateUserSession(req: Request): Promise<Partial<UserDto> | null> {
+  async validateUserSession(req: Request): Promise<Partial<User> | null> {
     // Graphql Playground IntrospectionQuery DOT NOT Validate
     if (req.body.query.includes('IntrospectionQuery')) {
       return null;
@@ -44,7 +44,7 @@ export class AuthService {
   // public async register(
   //   input: AuthRegisterInput,
   //   req: Request,
-  // ): Promise<UserDto> {
+  // ): Promise<User> {
   //   // const register = new UserEntity();
   //   // Object.assign(register, input);
   //   // const user = await this.create(register);
@@ -53,7 +53,7 @@ export class AuthService {
   //   // return user;
   // }
 
-  public async login(input: AuthLoginInput, req: Request): Promise<UserDto> {
+  public async login(input: AuthLoginInput, req: Request): Promise<User> {
     const user = await this.usersService.findOne(input.username);
 
     // if (!user || !bcryptjs.compareSync(input.password, user.password)) {
